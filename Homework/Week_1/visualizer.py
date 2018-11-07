@@ -104,7 +104,7 @@ with open(INPUT_CSV) as csvfile:
 	plt.plot(list_years, average_rating, 'c')
 
 	# start and end values
-	plt.axis([START_YEAR, END_YEAR, 5, 10])
+	plt.axis([START_YEAR, END_YEAR, 0, 10])
 
 	# set title
 	plt.title("The Movie-Rator")
@@ -138,7 +138,3 @@ with open(INPUT_CSV) as csvfile:
 
 	# open plot
 	plt.show()
-
-
-if __name__ == "__main__":
-    print(data_dict)
