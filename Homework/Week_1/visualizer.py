@@ -134,7 +134,7 @@ with open(INPUT_CSV) as csvfile:
 	plt.xlabel('Year')
 
 	# create some space between plots
-	plt.subplots_adjust(hspace=0.5)
+	plt.subplots_adjust(hspace = 0.5)
 
 	# open plot
 	plt.show()
