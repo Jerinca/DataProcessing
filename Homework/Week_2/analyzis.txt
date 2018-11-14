@@ -1,0 +1,48 @@
+#!/usr/bin/env python
+Name: Jerinca Vreugdenhil
+Student number: 12405965
+
+Analyzis about mean modus median and standard deviation:
+When we look at the analyzis the first thing we see is that the standard deviation is way too high.
+There for we will analyze the histogram first and make a new analyzes after we maybe dropped some data.
+
+About the histogram:
+When we make a histogram of the cleaned data we see a nice slope already.
+There is something that is catching the attention though. 
+The histogram is skewed right, but also it has one data point with a really high GDP.
+Once we look up that value in our dataset (by index), we find the country 'Suriname'.
+Since it is not likely that there are living only very rich people in Suriname, 
+we can assume this datapoint is not correct.
+
+To get a more reliable view of what the most likely GDP is, we have to create a new histogram.
+One that will not contain that datapoint. 
+
+Analyzis after making a new histogram:
+After we have removed the uncorrect datapoint, we still have a skewed histogram.
+But the value totally on the right side seems to be correct. The point represents Luxembourg.
+Since Luxembourg is a pretty rich country we will leave it in. 
+
+Furthermore we see a peak. The peak represents the GDP that is most frequent. In this case it is in between 500 & 800.
+That takes us back to the shape of the histogram. The histogram is obviously still right-skewed.
+
+We see that the standard deviation is way lower after dropping the outlier. Still pretty big but, not as before.
+
+Conclusion:
+The conclusion we can take is that there are way more countries with a lower GDP.
+And fewer with a high GDP. But also we see that the difference is pretty big and it is not normally distributed.
+That is also the reason why the average of the GDP is not even that low. 
+
+
+
+	# print(mean_GDP)
+	# print(median_GDP)
+	print(mode_GDP)
+	# print(st_dev_GDP)
+	print(description1)
+	print(description2)
+
+	# mean, median and mode GDP per capita worldwide
+	mean_GDP = df[column].mean()
+	median_GDP = df[column].median()
+	mode_GDP = df[column].mode()
+	st_dev_GDP = df[column].std()
