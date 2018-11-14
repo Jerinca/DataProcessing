@@ -84,12 +84,15 @@ def clean_information(data):
 		return countries
 
 def dataframe(countries):
-	"""Reads in dictionary to dataframe, 
-	and changes some elements to be able to work with"""
+	"""
+	Reads in dictionary to dataframe, 
+	and changes some elements to be able to work with
+	"""
 
 	# read in data from dictionary
 	df = pd.DataFrame.from_dict(countries)
 
+	infant_mortality = df['Infant mortality (per 1000 births)']
 	# convert sting into float with dot instead of comma and put it back in data frame
 	df['Infant mortality (per 1000 births)'] = df['Infant mortality (per 1000 births)'].str.replace(',','.').astype(float)
 	df['Pop. Density (per sq. mi.)'] = df['Pop. Density (per sq. mi.)'].str.replace(',','.').astype(float)
@@ -98,7 +101,9 @@ def dataframe(countries):
 	return df
 
 def analytics(df, column):
-	"""calculates descriptives"""
+	"""
+	calculates descriptives
+	"""
 
 	# mode GDP per capita worldwide
 	mode_GDP = df[column].mode()
@@ -110,8 +115,10 @@ def analytics(df, column):
 	print(description1)
 
 def plot_histogram(df):
-	"""plots histograms, 1 with everything
-	and the other one with an outlier removed"""
+	"""
+	plots histograms, 1 with everything
+	and the other one with an outlier removed
+	"""
 
 	# find the highest value in the column
 	maximum_index = df['GDP ($ per capita) dollars'].idxmax()
@@ -145,7 +152,9 @@ def plot_histogram(df):
 
 
 def plot_boxplot(df):
-	"""makes a boxplot of Infant mortality"""
+	"""
+	makes a boxplot of Infant mortality
+	"""
 
 	# if graph is being plotted use this style
 	plt.style.use('seaborn-darkgrid')
@@ -157,7 +166,9 @@ def plot_boxplot(df):
 	plt.show()
 
 def write_jason(df):
-	""" writes the dataframe to a json file"""
+	""" 
+	writes the dataframe to a json file
+	"""
 
 	# set Country as index of dataframe
 	df = df.set_index('Country')
