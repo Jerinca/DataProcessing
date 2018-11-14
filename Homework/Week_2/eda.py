@@ -124,7 +124,7 @@ def plot_histogram(df):
 	plt.subplot(211)
 
 	# plot a histogram with the GDP data and set a title, x-label, y-label
-	hist_plot = df['GDP ($ per capita) dollars'].hist(bins=50)
+	hist_plot = df['GDP ($ per capita) dollars'].hist(bins=50, color = "pink")
 	hist_plot.set_title('Before')
 	hist_plot.set_xlabel('GDP ($ per capita) dollars')
 	hist_plot.set_ylabel('Frequency')
@@ -134,7 +134,7 @@ def plot_histogram(df):
 	plt.subplot(212)
 
 	# plot a histogram with the GDP data and set a title, x-label, y-label
-	hist_plot = df['GDP ($ per capita) dollars'].hist(bins=50)
+	hist_plot = df['GDP ($ per capita) dollars'].hist(bins=50, color = "pink")
 	hist_plot.set_title('After')
 	hist_plot.set_xlabel('GDP ($ per capita) dollars')
 	hist_plot.set_ylabel('Frequency')
