@@ -1,0 +1,14 @@
+Expectation:
+(histogram, test)
+The most common mega ball number will be under 20.
+
+Conclusion:
+correct
+
+Expectation:
+(line graph)
+The multiplier is higher over time
+
+Conclusion:
+
+
