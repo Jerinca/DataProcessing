@@ -12,14 +12,14 @@ import numpy as np
 from bs4 import BeautifulSoup
 import matplotlib.pyplot as plt
 
-INFORMATION = 'Lottery_Mega_Millions_Winning_Numbers__Beginning_2002.csv'
+INFORMATION = 'AAPL.csv'
 
 print(INFORMATION)
 
 def open_csv(file):
 
 
-	winning_numbers = []
+	stock_information = []
 
 	# open csv file
 	with open(file) as csvfile:
@@ -34,19 +34,24 @@ def open_csv(file):
 			dictionary = {}
 
 			# add information to dictionary
-			dictionary['Draw Date'] = row['Draw Date']
-			dictionary['Winning Numbers'] = row['Winning Numbers']
-			dictionary['Mega Ball'] = row['Mega Ball']
-			dictionary['Multiplier'] = row['Multiplier']
+			dictionary['Date'] = row['Date']
+			dictionary['Open'] = row['Open']
+			dictionary['High'] = row['High']
+			dictionary['Low'] = row['Low']
+			dictionary['Close'] = row['Close']
+			dictionary['Adj Close'] = row['Adj Close']
+			dictionary['Volume'] = row['Volume']
+
+
 
 			# append everything to a list
-			winning_numbers.append(dictionary)
+			stock_information.append(dictionary)
 
-		return winning_numbers
+		return stock_information
 
 def open_file(file):
 	df = pd.DataFrame.from_dict(file)
-	df['Mega Ball'] = df['Mega Ball'].astype(int)
+	df['Close'] = df['Close'].astype(float)
 	print(df)
 	return df
 
@@ -56,9 +61,9 @@ def plot_histogram(df):
 	plt.style.use('seaborn-darkgrid')
 
 	# plot a histogram with the GDP data and set a title, x-label, y-label
-	hist_plot = df['Mega Ball'].hist(bins=50, color = "pink")
-	hist_plot.set_title('Number of megaball')
-	hist_plot.set_xlabel('Megaball number')
+	hist_plot = df['Close'].hist(bins=50, color = "pink")
+	hist_plot.set_title('Closing price AAPL stock')
+	hist_plot.set_xlabel('Date')
 	hist_plot.set_ylabel('Frequency')
 	plt.show()
 
@@ -67,9 +72,9 @@ def plot_line_chart(df):
 	# if graph is being plotted use this style
 	plt.style.use('seaborn-darkgrid')
 
-	x = df['Draw Date']
+	x = df['Date']
 
-	y = df['Multiplier']
+	y = df['Close']
 	plt.plot(x, y)
 	plt.show()
 
@@ -80,10 +85,10 @@ def write_jason(df):
 	"""
 	
 	# set Country as index of dataframe
-	df = df.set_index('Draw Date')
+	df = df.set_index('Date')
 
 	# write datafram to jason file 
-	df = df.to_json('lottery.json', orient='index')
+	df = df.to_json('appleclose.json', orient='index')
 
 
 if __name__ == "__main__":
