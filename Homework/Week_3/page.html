@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Hello Jerinca</title>
+</head>
+<body>
+	<canvas id = "myCanvas" width = "1500" height = "800"></canvas>
+		<script type="text/javascript">
+			var fileName = "appleclose.json";
+			var txtFile = new XMLHttpRequest();
+
+			// create global lists
+			var stockDates = [];
+			var stockPrices = [];
+
+			txtFile.onreadystatechange = function() {
+			    if (txtFile.readyState === 4 && txtFile.status == 200) {
+			    	var dataStock = JSON.parse(txtFile.responseText);
+			    	
+			    	// for every stock in dataset with stocks
+			    	for (stock in dataStock){
+
+			    		// push the stock dates and prices into lists
+			    		stockDates.push(stock);
+			    		stockPrices.push(dataStock[stock]["Close"]);   		
+			    	}
+
+
+
+			    // draw the canvas and x and y axis
+			    draw();
+			    maxValue = getMaxOfArray(stockPrices);
+			    minValue = getMinOfArray(stockPrices);
+
+			    console.log(maxValue)
+			    console.log(minValue)
+
+			    var y = createTransform([minValue, maxValue], [50,500])
+			    var x = createTransform([0, 252], [0,1100])
+
+			    
+			    // var hey = stockDates.getTime()
+			    // console.log(hey)
+			    
+			    for (i in stockPrices){
+		    		console.log(i)
+		    	}
+
+		    	for (i in stockDates){
+		    		console.log(i)
+
+			    }
+			    }
+			}
+			txtFile.open("GET", fileName);
+			txtFile.send();
+
+			function draw(canvas){
+
+				// get a canvas 2d 
+			   	var canvas = document.getElementById('myCanvas');
+				var ctx = canvas.getContext('2d');
+				x=0, y=0, width=1200, height=600;
+
+				// sets the elements of the canvas
+				ctx.fillStyle = "beige";				
+				ctx.fillRect(x, y, width, height)
+				ctx.beginPath();
+				ctx.moveTo(50,40);
+				ctx.lineTo(50,500);
+				ctx.lineTo(1100,500)
+				ctx.stroke();
+				ctx.font = "30px Arial";
+				ctx.strokeText("Daily Closing Prices AAPL", 550, 40);
+				ctx.font = "20px Arial";
+				ctx.strokeText("Time", 550, 560);
+				
+				ctx.strokeText("Stock Price", width/2, height/2)
+				// ctx.rotate(180 * (Math.PI / 180));
+
+				
+				}
+
+			function getMaxOfArray(numArray) {
+				return Math.max.apply(null, numArray);
+				
+				}
+
+			function getMinOfArray(numArray) {
+				return Math.min.apply(null, numArray);
+				
+				}
+
+
+			function createTransform(domain, range){
+			// domain is a two-element array of the data bounds [domain_min, domain_max]
+			// range is a two-element array of the screen bounds [range_min, range_max]
+			// this gives you two equations to solve:
+			// range_min = alpha * domain_min + beta
+			// range_max = alpha * domain_max + beta
+		 		// a solution would be:
+
+		    var domain_min = domain[0]
+		    var domain_max = domain[1]
+		    var range_min = range[0]
+		    var range_max = range[1]
+
+		    // formulas to calculate the alpha and the beta
+		   	var alpha = (range_max - range_min) / (domain_max - domain_min)
+		    var beta = range_max - alpha * domain_max
+
+		    // returns the function for the linear transformation (y= a * x + b)
+		    return function(x){
+		      return alpha * x + beta;
+ 			}
+
+
+		    }
+		
+		</script>
+
+</body>
+</html>

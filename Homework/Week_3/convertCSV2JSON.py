@@ -42,8 +42,6 @@ def open_csv(file):
 			dictionary['Adj Close'] = row['Adj Close']
 			dictionary['Volume'] = row['Volume']
 
-
-
 			# append everything to a list
 			stock_information.append(dictionary)
 
@@ -52,7 +50,6 @@ def open_csv(file):
 def open_file(file):
 	df = pd.DataFrame.from_dict(file)
 	df['Close'] = df['Close'].astype(float)
-	print(df)
 	return df
 
 def plot_histogram(df):
