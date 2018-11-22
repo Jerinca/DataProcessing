@@ -4,54 +4,53 @@
 	<title>Hello Jerinca</title>
 </head>
 <body>
+	<p>Jerinca Vreugdenhil 
+		Studentnummer: 12405965
+		<a href="https://finance.yahoo.com/quote/AAPL/history?p=AAPL">link text</a>
+	</p>
 	<canvas id = "myCanvas" width = "1500" height = "800"></canvas>
 		<script type="text/javascript">
 			var fileName = "appleclose.json";
 			var txtFile = new XMLHttpRequest();
 
-			// create global lists
+			// create global lists and a counter for amount of dates
 			var stockDates = [];
+			var counter = 0;
 			var stockPrices = [];
+			var stockCoordinates = [];
 
 			txtFile.onreadystatechange = function() {
 			    if (txtFile.readyState === 4 && txtFile.status == 200) {
 			    	var dataStock = JSON.parse(txtFile.responseText);
-			    	
+			    
 			    	// for every stock in dataset with stocks
 			    	for (stock in dataStock){
-
-			    		// push the stock dates and prices into lists
-			    		stockDates.push(stock);
+			    		
+			    		// push amount of dates and push closing stock dates
+			    		stockDates.push(counter);
+			    		counter++;
 			    		stockPrices.push(dataStock[stock]["Close"]);   		
 			    	}
 
-
-
-			    // draw the canvas and x and y axis
-			    draw();
+			    // get min and max
 			    maxValue = getMaxOfArray(stockPrices);
 			    minValue = getMinOfArray(stockPrices);
 
-			    console.log(maxValue)
-			    console.log(minValue)
+			    // transform values into x and y pixels on the canvas
+			    var y = createTransform([minValue - 50, maxValue + 50], [40, 500]);
+			    var x = createTransform([0, 252], [50, 1100]);
 
-			    var y = createTransform([minValue, maxValue], [50,500])
-			    var x = createTransform([0, 252], [0,1100])
-
-			    
-			    // var hey = stockDates.getTime()
-			    // console.log(hey)
-			    
-			    for (i in stockPrices){
-		    		console.log(i)
-		    	}
-
-		    	for (i in stockDates){
-		    		console.log(i)
-
+			    // get coorditnates on the canvas
+			    for (var i = 0; i < stockPrices.length; i++){
+			    	stockCoordinates[i] = 500 - y(stockPrices[i]);
+			    	stockDates[i] = x(stockDates[i]);
 			    }
+			    // draw
+			    draw();
+
 			    }
 			}
+
 			txtFile.open("GET", fileName);
 			txtFile.send();
 
@@ -60,37 +59,78 @@
 				// get a canvas 2d 
 			   	var canvas = document.getElementById('myCanvas');
 				var ctx = canvas.getContext('2d');
-				x=0, y=0, width=1200, height=600;
+				x = 0, y = 0, width = 1200, height = 600;
 
 				// sets the elements of the canvas
 				ctx.fillStyle = "beige";				
-				ctx.fillRect(x, y, width, height)
+				ctx.fillRect(x, y, width, height);
+
+				// draw axis
 				ctx.beginPath();
-				ctx.moveTo(50,40);
-				ctx.lineTo(50,500);
-				ctx.lineTo(1100,500)
+				ctx.moveTo(50, 40);
+				ctx.lineTo(50, 500);
+				ctx.lineTo(1100, 500)
+
+				// label axis
 				ctx.stroke();
 				ctx.font = "30px Arial";
 				ctx.strokeText("Daily Closing Prices AAPL", 550, 40);
 				ctx.font = "20px Arial";
-				ctx.strokeText("Time", 550, 560);
-				
-				ctx.strokeText("Stock Price", width/2, height/2)
-				// ctx.rotate(180 * (Math.PI / 180));
+				ctx.strokeText("Time in trading days", 550, 560);
 
-				
+				// save and hold
+				ctx.save();
+				ctx.translate(20, 300);
+
+				// rotate and write down time, restore
+				ctx.rotate( -Math.PI / 2 );
+				ctx.font = "16px serif";
+				ctx.fillStyle = "black"; 
+				ctx.fillText( "Stock Price", 0, 0 );
+				ctx.restore();
+				ctx.beginPath();
+				ctx.moveTo(stockDates[0],stockCoordinates[0]);
+				ctx.font = "10px serif";
+				ctx.fillStyle = "black"; 
+
+				// draw graph
+			    for (var i = 1; i < stockCoordinates.length; i++){ 
+					ctx.lineTo(stockDates[i],stockCoordinates[i]);
+					ctx.stroke();
 				}
 
+				for (var i = 1; i < stockCoordinates.length; i++){
+					if (i % 20 ===0)
+
+						// write down stockprice
+						ctx.fillText(Math.round(stockPrices[i],2), 30, stockCoordinates[i]);
+						ctx.moveTo(stockDates[0], stockCoordinates[i]);
+				}
+
+				for (var i = 1; i < stockCoordinates.length; i++){
+					if (i % 4 ===0){
+
+						// rotate and write down time, restore
+						ctx.save();
+						ctx.translate(0, 600);
+						ctx.rotate( -Math.PI / 2 );
+						ctx.font = "10px serif";
+						ctx.fillStyle = "black"; 
+						ctx.fillText(i - 1, 70, stockDates[i]);
+						ctx.restore();
+					}
+				}
+				}
+
+			// get maximum out of array
 			function getMaxOfArray(numArray) {
 				return Math.max.apply(null, numArray);
-				
 				}
 
+			// get minimum out of array
 			function getMinOfArray(numArray) {
 				return Math.min.apply(null, numArray);
-				
 				}
-
 
 			function createTransform(domain, range){
 			// domain is a two-element array of the data bounds [domain_min, domain_max]
@@ -100,23 +140,20 @@
 			// range_max = alpha * domain_max + beta
 		 		// a solution would be:
 
-		    var domain_min = domain[0]
-		    var domain_max = domain[1]
-		    var range_min = range[0]
-		    var range_max = range[1]
+		    var domain_min = domain[0];
+		    var domain_max = domain[1];
+		    var range_min = range[0];
+		    var range_max = range[1];
 
 		    // formulas to calculate the alpha and the beta
-		   	var alpha = (range_max - range_min) / (domain_max - domain_min)
-		    var beta = range_max - alpha * domain_max
+		   	var alpha = (range_max - range_min) / (domain_max - domain_min);
+		    var beta = range_max - alpha * domain_max;
 
 		    // returns the function for the linear transformation (y= a * x + b)
 		    return function(x){
 		      return alpha * x + beta;
  			}
-
-
 		    }
-		
 		</script>
 
 </body>

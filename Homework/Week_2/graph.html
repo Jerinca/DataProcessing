@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Hello Jerinca</title>
+</head>
+<body>
+	<canvas id = "myCanvas" width = "1500" height = "800"></canvas>
+		<script type="text/javascript">
+			var fileName = "appleclose.json";
+			var txtFile = new XMLHttpRequest();
+
+			// create global lists
+			var stockDates = [];
+			var stockPrices = [];
+
+			txtFile.onreadystatechange = function() {
+			    if (txtFile.readyState === 4 && txtFile.status == 200) {
+			    	var dataStock = JSON.parse(txtFile.responseText);
+			    	
+			    	// for every stock in dataset with stocks
+			    	for (stock in dataStock){
+
+			    		// push the stock dates and prices into lists
+			    		stockDates.push(stock);
+			    		stockPrices.push(dataStock[stock]["Close"]);
+			    		
+			    	}
+			    console.log(stockDates); 
+			    console.log(stockPrices); 
+			    
+			    // get a canvas 2d 
+			   	var canvas = document.getElementById('myCanvas');
+				var ctx = canvas.getContext('2d');
+				x=0, y=0, width=1200, height=600;
+
+				// sets the elements of the canvas
+				ctx.fillStyle = "beige";				
+				ctx.fillRect(x, y, width, height)
+
+				// function draw(){
+					
+				// }
+
+			    }
+			}
+			txtFile.open("GET", fileName);
+			txtFile.send();
+		</script>
+
+</body>
+</html>
