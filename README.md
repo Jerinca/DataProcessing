@@ -1,17 +1,21 @@
 
 
 week1
-
-# DataProcessing
-Visualisation of the average rating of movies in the years 2008 - 2018
-
+Movies
 
 week 2
 eda.py 
 
-
-
-
 Week 3
 Javascript
+
+Week 4
+barchart
+
+Week 5 
+Scatterplot
+
+Week 6 
+Linked views
+
 https://jerinca.github.io/DataProcessing/
